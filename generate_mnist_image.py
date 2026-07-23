@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 from mnists import MNIST
 
-GITHUB_USERNAME = "f4rys"
+GITHUB_USERNAME = "nadirean"
 GITHUB_TOKEN = os.environ.get("GH_TOKEN")
 OUTPUT_IMAGE_NAME = "mnist_commits.png"
 
