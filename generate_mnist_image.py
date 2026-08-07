@@ -1,4 +1,7 @@
 import os
+import shutil
+import subprocess
+import tempfile
 import requests
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
@@ -8,30 +11,44 @@ GITHUB_USERNAME = "nadirean"
 GITHUB_TOKEN = os.environ.get("GH_TOKEN")
 OUTPUT_IMAGE_NAME = "mnist_commits.png"
 
-def get_total_commits():
-    """Fetches the total number of commits for the user."""
-    url = "https://api.github.com/graphql"
+def get_owned_repos():
+    """Fetches the names of all repositories owned by the user."""
     headers = {"Authorization": f"Bearer {GITHUB_TOKEN}"}
-    query = {
-        "query": f"""
-        query {{
-            user(login: "{GITHUB_USERNAME}") {{
-                contributionsCollection {{
-                    totalCommitContributions
-                }}
-            }}
-        }}
-        """
-    }
+    repos = []
+    url = "https://api.github.com/user/repos?per_page=100&affiliation=owner&type=all"
+    while url:
+        response = requests.get(url, headers=headers)
+        if response.status_code != 200:
+            raise Exception(f"GitHub API query failed with status code: {response.status_code}\n{response.text}")
+        repos.extend(repo["name"] for repo in response.json())
+        url = response.links.get("next", {}).get("url")
+    return repos
 
-    response = requests.post(url, json=query, headers=headers)
-    if response.status_code == 200:
-        data = response.json()
-        total_commits = data["data"]["user"]["contributionsCollection"]["totalCommitContributions"]
-        print(f"Total commits found: {total_commits}")
-        return total_commits
-    else:
-        raise Exception(f"GitHub API query failed with status code: {response.status_code}\n{response.text}")
+
+def count_commits_in_repo(repo_name):
+    """Clones a repo (blob-less) and counts unique commits reachable from any ref."""
+    clone_url = f"https://x-access-token:{GITHUB_TOKEN}@github.com/{GITHUB_USERNAME}/{repo_name}.git"
+    with tempfile.TemporaryDirectory() as tmpdir:
+        subprocess.run(
+            ["git", "clone", "--filter=blob:none", "--bare", clone_url, tmpdir],
+            check=True, capture_output=True,
+        )
+        result = subprocess.run(
+            ["git", "rev-list", "--all", "--count"],
+            cwd=tmpdir, check=True, capture_output=True, text=True,
+        )
+        return int(result.stdout.strip())
+
+
+def get_total_commits():
+    """Counts all commits across all owned repos, all branches, all time."""
+    total = 0
+    for repo in get_owned_repos():
+        count = count_commits_in_repo(repo)
+        print(f"{repo}: {count} commits")
+        total += count
+    print(f"Total commits found: {total}")
+    return total
 
 def generate_commit_image(commit_count):
     """
