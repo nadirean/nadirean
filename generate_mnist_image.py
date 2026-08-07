@@ -15,7 +15,7 @@ def get_owned_repos():
     """Fetches the names of all repositories owned by the user."""
     headers = {"Authorization": f"Bearer {GITHUB_TOKEN}"}
     repos = []
-    url = "https://api.github.com/user/repos?per_page=100&affiliation=owner&type=all"
+    url = "https://api.github.com/user/repos?per_page=100&affiliation=owner"
     while url:
         response = requests.get(url, headers=headers)
         if response.status_code != 200:
