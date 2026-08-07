@@ -1,5 +1,5 @@
 # Hi there 👋
 
-I navigate two distinct worlds. Professionally, I engineer polished, production‑grade mobile applications using **React Native** and **Expo**. In parallel, I am deeply focused on **Artificial Intelligence**, studying it at university, familiar with the core concepts and deepening the knowledge by keeping up with the latest trends.
+I navigate two distinct worlds. Professionally, I engineer production‑grade mobile applications using **React Native** and **Expo**. In parallel, I am finishing a master's in **Artificial Intelligence & Machine Learning** at AGH University - with deep, hands-on knowledge of the subject built over years of study.
 
 ![MNIST Commit Counter](mnist_commits.png)
