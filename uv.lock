@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.13"
 
 [[package]]
@@ -34,25 +34,6 @@ wheels = [
 ]
 
 [[package]]
-name = "f4rys"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "mnists" },
-    { name = "numpy" },
-    { name = "pillow" },
-    { name = "requests" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "mnists", specifier = ">=0.4.1" },
-    { name = "numpy", specifier = ">=2.3.1" },
-    { name = "pillow", specifier = ">=11.2.1" },
-    { name = "requests", specifier = ">=2.32.4" },
-]
-
-[[package]]
 name = "idna"
 version = "3.10"
 source = { registry = "https://pypi.org/simple" }
@@ -71,6 +52,25 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/16/57/76118791bba51bae23d7baec423c158b58af4bff22b53bb49fbb2f3a30fc/mnists-0.4.1.tar.gz", hash = "sha256:a0398c8409409f4cc3a13b95fcfea89bb1ec761eacb44e668b5c4f4358f082fb", size = 11873, upload-time = "2024-07-06T20:42:29.033Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a0/9f/8d4f954d104a7810ef0a43614124a0daa95d7ed9e817e480cd9d2334c1ea/mnists-0.4.1-py3-none-any.whl", hash = "sha256:d23557814da8349f0a022050d7c6cb77d236a942a269580de353c51a105e475a", size = 12001, upload-time = "2024-07-06T20:41:46.428Z" },
+]
+
+[[package]]
+name = "nadirean"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "mnists" },
+    { name = "numpy" },
+    { name = "pillow" },
+    { name = "requests" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "mnists", specifier = ">=0.4.1" },
+    { name = "numpy", specifier = ">=2.3.1" },
+    { name = "pillow", specifier = ">=11.2.1" },
+    { name = "requests", specifier = ">=2.32.4" },
 ]
 
 [[package]]
