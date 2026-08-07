@@ -17,9 +17,7 @@ def get_total_commits():
         query {{
             user(login: "{GITHUB_USERNAME}") {{
                 contributionsCollection {{
-                    contributionCalendar {{
-                        totalContributions
-                    }}
+                    totalCommitContributions
                 }}
             }}
         }}
@@ -29,7 +27,7 @@ def get_total_commits():
     response = requests.post(url, json=query, headers=headers)
     if response.status_code == 200:
         data = response.json()
-        total_commits = data["data"]["user"]["contributionsCollection"]["contributionCalendar"]["totalContributions"]
+        total_commits = data["data"]["user"]["contributionsCollection"]["totalCommitContributions"]
         print(f"Total commits found: {total_commits}")
         return total_commits
     else:
@@ -66,6 +64,8 @@ def generate_commit_image(commit_count):
         font = ImageFont.load_default()
 
     print(f"Generating images for commit count: {commit_str}")
+    # Seed deterministically so the digits only change when the count changes.
+    np.random.seed(commit_count)
     for digit in commit_str:
         digit = int(digit)
         indices = np.where(y_train == digit)[0]
@@ -74,8 +74,6 @@ def generate_commit_image(commit_count):
         digit_image = Image.fromarray(digit_image_array.astype('uint8'), 'L')
         # Upscale digit
         digit_image = digit_image.resize((target_digit_width, target_digit_height), resample=Image.NEAREST)
-        # Invert digit to make it white on black
-        #digit_image = Image.eval(digit_image, lambda px: 255 - px)
         digit_images.append(digit_image)
 
     digits_width = sum(img.width for img in digit_images)
